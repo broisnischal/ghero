@@ -16,7 +16,6 @@ const getBranchName = (): string => {
   return branchName() || "master";
 };
 
-console.log(getBranchName());
 // change
 const formatFolderName = (name: string): string => {
   return name.split(" ").join("-").toLowerCase();
@@ -31,6 +30,7 @@ function commit(commitMessage: string) {
   try {
     execSync(`git add . && git commit -m "${commitMessage}"`);
   } catch (err: Error | any) {
+    console.log(err);
     console.error("Error making Git commit:", err.message);
   }
 }
@@ -66,10 +66,11 @@ program.command("commit <message>").action((message) => {
 });
 
 program
-  .command("push <branch-name>")
-  .description("Push a branch to the remote repository")
-  .action((branchName) => {
+  .command("push")
+  .description(`Push a branch ${getBranchName()} to the remote repository`)
+  .action(() => {
     try {
+      const branchName = getBranchName();
       const pushProcess = spawn("git", ["push", "origin", branchName]);
 
       pushProcess.stdout.on("data", (data) => {
