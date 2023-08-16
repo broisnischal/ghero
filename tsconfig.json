@@ -5,6 +5,7 @@
   "_version": "18.1.0",
   "compilerOptions": {
     "lib": ["es2023"],
+    "outDir": "dist",
     "module": "Node16",
     "target": "es2022",
     "strict": true,
