@@ -10,7 +10,7 @@ import { spawn } from "child_process";
 import branchName from "current-git-branch";
 
 const program = new Command();
-const TARGET = 24;
+const TARGET = 0o0;
 program.version("1.0.0");
 
 const getBranchName = (): string => {
@@ -52,7 +52,7 @@ function calculateTimeDifference(): string {
   }
 }
 
-calculateTimeDifference();
+console.log(calculateTimeDifference());
 
 function commit(commitMessage: string) {
   execSync("git add .");
