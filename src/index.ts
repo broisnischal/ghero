@@ -29,9 +29,14 @@ const isNodeModulesIgnored = (): boolean => {
 function commit(commitMessage: string) {
   try {
     execSync(`git add . && git commit -m "${commitMessage}"`);
-  } catch (err: Error | any) {
-    console.log(err);
-    console.error("Error making Git commit:", err.message);
+  } catch (error: Error | any) {
+    const errorMessage = error.message;
+
+    if (errorMessage.includes("nothing to commit, working tree clean")) {
+      console.log("Nothing to commit. Working tree is clean.");
+    } else {
+      console.error("Error making Git commit:", errorMessage);
+    }
   }
 }
 
