@@ -31,9 +31,10 @@ function commit(commitMessage: string) {
 program.command("commit <message>").action((message) => {
   const projectFolderName = path.basename(process.cwd());
   const date = format(new Date(), "yyyy-MM-dd HH:mm");
-
   const commitMessage = `${date} | ${formatFolderName(projectFolderName)} - ${message}`;
   // execSync(`git add .`, { stdio: "inherit" });
+
+  console.log(!isNodeModulesIgnored());
 
   if (!isNodeModulesIgnored()) {
     const rl = readline.createInterface({
