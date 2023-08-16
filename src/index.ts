@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+// Created by @neeswebservices
 import { Command } from "commander";
 import { execSync } from "child_process";
 import * as path from "path";
@@ -8,10 +8,9 @@ import * as fs from "fs";
 import readline from "readline";
 import { spawn } from "child_process";
 import branchName from "current-git-branch";
-import { el } from "date-fns/locale";
 
 const program = new Command();
-const TARGET = 0o0;
+const TARGET = 17;
 program.version("1.0.0");
 
 const getBranchName = (): string => {
@@ -61,17 +60,18 @@ function commit(commitMessage: string) {
   commitProcess.on("close", (code) => {
     if (code === 0) {
       if (!greaterTimeThanTarget()) {
-        console.log("Git commit successful.");
+        return console.log("Git commit successful.");
       }
 
       console.log("Git commit successfull!");
       console.log(`😆 you worked ${calculateTimeDifference()} minutes more today!`);
+
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
       });
 
-      rl.question("Do you want to push? (y/N): ", (answer) => {
+      rl.question(`Do you want to push to ${getBranchName()} branch? (y/N): \n`, (answer) => {
         rl.close();
         if (answer.toLowerCase() === "y") {
           push();
@@ -103,7 +103,7 @@ function push() {
 
     pushProcess.on("close", (code) => {
       if (code === 0) {
-        console.log("Git push successful.");
+        console.log(`Git push successful. see you tomorrow! ${format(new Date(), "HH:mm")}`);
       } else {
         console.error(`Git push failed with exit code ${code}.`);
       }
