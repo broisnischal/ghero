@@ -1,0 +1,19 @@
+{
+  "name": "gaitc",
+  "version": "1.0.0",
+  "description": "asdfasdf",
+  "bin": {
+    "aitc": "index.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc -w"
+  },
+  "keywords": [],
+  "author": "neeswebservices",
+  "license": "ISC",
+  "dependencies": {
+    "@types/typescript": "^2.0.0",
+    "typescript": "^5.1.6"
+  }
+}
