@@ -8,7 +8,6 @@ import * as fs from "fs";
 import readline from "readline";
 import { spawn } from "child_process";
 import branchName from "current-git-branch";
-import { el } from "date-fns/locale";
 
 const program = new Command();
 const TARGET = 0o0;
@@ -103,7 +102,7 @@ function push() {
 
     pushProcess.on("close", (code) => {
       if (code === 0) {
-        console.log("Git push successful.");
+        console.log(`Git push successful. see you tomorrow! ${format(new Date(), "HH:mm")}`);
       } else {
         console.error(`Git push failed with exit code ${code}.`);
       }
