@@ -7,10 +7,16 @@ import { format } from "date-fns";
 import * as fs from "fs";
 import readline from "readline";
 import { spawn } from "child_process";
+import branchName from "current-git-branch";
 
 const program = new Command();
-
 program.version("1.0.0");
+
+const getBranchName = (): string => {
+  return branchName() || "master";
+};
+
+getBranchName();
 
 const formatFolderName = (name: string): string => {
   return name.split(" ").join("-").toLowerCase();
@@ -34,8 +40,6 @@ program.command("commit <message>").action((message) => {
   const date = format(new Date(), "yyyy-MM-dd HH:mm");
   const commitMessage = `${date} | ${formatFolderName(projectFolderName)} - ${message}`;
   // execSync(`git add .`, { stdio: "inherit" });
-
-  console.log(!isNodeModulesIgnored());
 
   if (!isNodeModulesIgnored()) {
     const rl = readline.createInterface({
