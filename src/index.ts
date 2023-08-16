@@ -16,8 +16,6 @@ const getBranchName = (): string => {
   return branchName() || "master";
 };
 
-getBranchName();
-
 const formatFolderName = (name: string): string => {
   return name.split(" ").join("-").toLowerCase();
 };
@@ -40,6 +38,8 @@ program.command("commit <message>").action((message) => {
   const date = format(new Date(), "yyyy-MM-dd HH:mm");
   const commitMessage = `${date} | ${formatFolderName(projectFolderName)} - ${message}`;
   // execSync(`git add .`, { stdio: "inherit" });
+
+  getBranchName();
 
   if (!isNodeModulesIgnored()) {
     const rl = readline.createInterface({
