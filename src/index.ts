@@ -3,13 +3,14 @@
 import { Command } from "commander";
 import { execSync } from "child_process";
 import * as path from "path";
-import { format } from "date-fns";
+import { format, differenceInMinutes } from "date-fns";
 import * as fs from "fs";
 import readline from "readline";
 import { spawn } from "child_process";
 import branchName from "current-git-branch";
 
 const program = new Command();
+const TARGET = 24;
 program.version("1.0.0");
 
 const getBranchName = (): string => {
@@ -25,6 +26,33 @@ const isNodeModulesIgnored = (): boolean => {
   const gitIgnoreContent = fs.readFileSync(".gitignore", "utf-8");
   return gitIgnoreContent.includes("node_modules");
 };
+
+function greaterTimeThanTarget(target: number = TARGET): boolean {
+  const now = new Date();
+  const targetTime = new Date(now);
+  targetTime.setHours(target, 0, 0, 0);
+  return now > targetTime;
+}
+
+console.log(greaterTimeThanTarget());
+
+function calculateTimeDifference(): string {
+  const now = new Date();
+  const targetTime = new Date(now);
+  targetTime.setHours(TARGET, 0, 0, 0);
+
+  if (now > targetTime) {
+    const timeDifference = differenceInMinutes(now, targetTime);
+    const hours = Math.floor(timeDifference / 60);
+    const minutes = timeDifference % 60;
+
+    return `${hours} hours and ${minutes} minutes greater than 5:00 PM`;
+  } else {
+    return "Time is not greater than 5:00 PM yet.";
+  }
+}
+
+calculateTimeDifference();
 
 function commit(commitMessage: string) {
   execSync("git add .");
