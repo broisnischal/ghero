@@ -6,6 +6,7 @@ import * as path from "path";
 import { format } from "date-fns";
 import * as fs from "fs";
 import readline from "readline";
+import { spawn } from "child_process";
 
 const program = new Command();
 
@@ -60,12 +61,31 @@ program.command("commit <message>").action((message) => {
   }
 });
 
-program.command("push <branch-name>").action((branchName) => {
-  try {
-    execSync(`git push origin ${branchName}`);
-  } catch (err: Error | any) {
-    console.error("Error making Git push:", err.message);
-  }
-});
+program
+  .command("push <branch-name>")
+  .description("Push a branch to the remote repository")
+  .action((branchName) => {
+    try {
+      const pushProcess = spawn("git", ["push", "origin", branchName]);
+
+      pushProcess.stdout.on("data", (data) => {
+        console.log(data.toString());
+      });
+
+      pushProcess.stderr.on("data", (data) => {
+        console.error(data.toString());
+      });
+
+      pushProcess.on("close", (code) => {
+        if (code === 0) {
+          console.log("Git push successful.");
+        } else {
+          console.error(`Git push failed with exit code ${code}.`);
+        }
+      });
+    } catch (err: any) {
+      console.error("Error making Git push:", err.message);
+    }
+  });
 
 program.parse(process.argv);
