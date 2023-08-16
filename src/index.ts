@@ -17,7 +17,7 @@ const getBranchName = (): string => {
 };
 
 console.log(getBranchName());
-
+// change
 const formatFolderName = (name: string): string => {
   return name.split(" ").join("-").toLowerCase();
 };
