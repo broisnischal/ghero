@@ -60,7 +60,7 @@ function commit(commitMessage: string) {
   commitProcess.on("close", (code) => {
     if (code === 0) {
       if (!greaterTimeThanTarget()) {
-        console.log("Git commit successful.");
+        return console.log("Git commit successful.");
       }
 
       console.log("Git commit successfull!");
