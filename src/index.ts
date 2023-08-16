@@ -27,18 +27,43 @@ const isNodeModulesIgnored = (): boolean => {
 };
 
 function commit(commitMessage: string) {
-  try {
-    execSync(`git add . && git commit -m "${commitMessage}"`);
-  } catch (error: Error | any) {
-    const errorMessage = error.message;
+  execSync("git add .");
+  const commitProcess = spawn("git", ["commit", "-m", commitMessage]);
 
-    if (errorMessage.includes("nothing to commit, working tree clean")) {
-      console.log("Nothing to commit. Working tree is clean.");
+  commitProcess.stdout.on("data", (data) => {
+    console.log(data.toString());
+  });
+
+  commitProcess.stderr.on("data", (data) => {
+    console.error(data.toString());
+  });
+
+  commitProcess.on("close", (code) => {
+    if (code === 0) {
+      console.log("Git commit successful.");
     } else {
-      console.error("Error making Git commit:", errorMessage);
+      if (code === 1) {
+        console.log("Nothing to commit. Working tree is clean.");
+      } else {
+        console.error(`Error making Git commit. Exit code: ${code}`);
+      }
     }
-  }
+  });
 }
+
+// function commit(commitMessage: string) {
+//   try {
+//     execSync(`git add . && git commit -m "${commitMessage}"`);
+//   } catch (error: Error | any) {
+//     const errorMessage = error.message;
+
+//     if (errorMessage.includes("nothing to commit, working tree clean")) {
+//       console.log("Nothing to commit. Working tree is clean.");
+//     } else {
+//       console.error("Error making Git commit:", errorMessage);
+//     }
+//   }
+// }
 
 program.command("commit <message>").action((message) => {
   const projectFolderName = path.basename(process.cwd());
