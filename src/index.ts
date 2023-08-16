@@ -43,7 +43,6 @@ function commit(commitMessage: string) {
       console.log("Git commit successful.");
     } else {
       if (code === 1) {
-        console.log("Nothing to commit. Working tree is clean.");
       } else {
         console.error(`Error making Git commit. Exit code: ${code}`);
       }
