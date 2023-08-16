@@ -43,10 +43,8 @@ function calculateTimeDifference(): string {
 
   if (now > targetTime) {
     const timeDifference = differenceInMinutes(now, targetTime);
-    const hours = Math.floor(timeDifference / 60);
-    const minutes = timeDifference % 60;
 
-    return `${hours} hours and ${minutes} minutes greater than 5:00 PM`;
+    return `${timeDifference} minutes greater than 5:00 PM`;
   } else {
     return "Time is not greater than 5:00 PM yet.";
   }
