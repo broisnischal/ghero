@@ -50,49 +50,38 @@ function commit(commitMessage: string) {
   });
 }
 
-// function commit(commitMessage: string) {
-//   try {
-//     execSync(`git add . && git commit -m "${commitMessage}"`);
-//   } catch (error: Error | any) {
-//     const errorMessage = error.message;
+program
+  .command("commit [message]")
+  .argument("<string>", "Commit message")
+  .action((message: string) => {
+    const projectFolderName = path.basename(process.cwd());
+    const date = format(new Date(), "yyyy-MM-dd HH:mm");
+    const commitMessage = `${date} | ${formatFolderName(projectFolderName)} - ${message}`;
+    // execSync(`git add .`, { stdio: "inherit" });
 
-//     if (errorMessage.includes("nothing to commit, working tree clean")) {
-//       console.log("Nothing to commit. Working tree is clean.");
-//     } else {
-//       console.error("Error making Git commit:", errorMessage);
-//     }
-//   }
-// }
-
-program.command("commit <message>").action((message) => {
-  const projectFolderName = path.basename(process.cwd());
-  const date = format(new Date(), "yyyy-MM-dd HH:mm");
-  const commitMessage = `${date} | ${formatFolderName(projectFolderName)} - ${message}`;
-  // execSync(`git add .`, { stdio: "inherit" });
-
-  if (!isNodeModulesIgnored()) {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-    rl.question(
-      "missing \x1b[1mnode_modules\x1b[0m in .gitignore, Are you sure want to commit? (y/N): ",
-      (answer) => {
-        rl.close();
-        if (answer.toLocaleLowerCase() === "y") {
-          commit(commitMessage);
-        } else if (answer.toLocaleLowerCase() === "n") {
-          console.log("Go add node_modules to .gitignore");
-          process.exit(0);
-        } else {
-          console.log("Please enter y or n");
+    if (!isNodeModulesIgnored()) {
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      rl.question(
+        "missing \x1b[1mnode_modules\x1b[0m in .gitignore, Are you sure want to commit? (y/N): ",
+        (answer) => {
+          rl.close();
+          if (answer.toLocaleLowerCase() === "y") {
+            commit(commitMessage);
+          } else if (answer.toLocaleLowerCase() === "n") {
+            console.log("Go add node_modules to .gitignore");
+            process.exit(0);
+          } else {
+            console.log("Please enter y or n");
+          }
         }
-      }
-    );
-  } else {
-    commit(commitMessage);
-  }
-});
+      );
+    } else {
+      commit(commitMessage);
+    }
+  });
 
 program
   .command("push")
