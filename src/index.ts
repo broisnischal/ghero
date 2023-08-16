@@ -51,7 +51,7 @@ function commit(commitMessage: string) {
 }
 
 program
-  .command("commit [message]")
+  .command("commit")
   .argument("<string>", "Commit message")
   .action((message: string) => {
     const projectFolderName = path.basename(process.cwd());
