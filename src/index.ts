@@ -8,6 +8,7 @@ import * as fs from "fs";
 import readline from "readline";
 import { spawn } from "child_process";
 import branchName from "current-git-branch";
+import { el } from "date-fns/locale";
 
 const program = new Command();
 const TARGET = 0o0;
@@ -17,7 +18,6 @@ const getBranchName = (): string => {
   return branchName() || "master";
 };
 
-// change
 const formatFolderName = (name: string): string => {
   return name.split(" ").join("-").toLowerCase();
 };
@@ -34,23 +34,17 @@ function greaterTimeThanTarget(target: number = TARGET): boolean {
   return now > targetTime;
 }
 
-console.log(greaterTimeThanTarget());
-
-function calculateTimeDifference(): string {
+function calculateTimeDifference(): number | null {
   const now = new Date();
   const targetTime = new Date(now);
   targetTime.setHours(TARGET, 0, 0, 0);
 
   if (now > targetTime) {
-    const timeDifference = differenceInMinutes(now, targetTime);
-
-    return `${timeDifference} minutes greater than 5:00 PM`;
+    return differenceInMinutes(now, targetTime);
   } else {
-    return "Time is not greater than 5:00 PM yet.";
+    return null;
   }
 }
-
-console.log(calculateTimeDifference());
 
 function commit(commitMessage: string) {
   execSync("git add .");
@@ -66,7 +60,25 @@ function commit(commitMessage: string) {
 
   commitProcess.on("close", (code) => {
     if (code === 0) {
-      console.log("Git commit successful.");
+      if (!greaterTimeThanTarget()) {
+        console.log("Git commit successful.");
+      }
+
+      console.log("Git commit successfull!");
+      console.log(`😆 you worked ${calculateTimeDifference()} minutes more today!`);
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+
+      rl.question("Do you want to push? (y/N): ", (answer) => {
+        rl.close();
+        if (answer.toLowerCase() === "y") {
+          push();
+        } else {
+          process.exit(0);
+        }
+      });
     } else {
       if (code === 1) {
       } else {
@@ -74,6 +86,31 @@ function commit(commitMessage: string) {
       }
     }
   });
+}
+
+function push() {
+  try {
+    const branchName = getBranchName();
+    const pushProcess = spawn("git", ["push", "origin", branchName]);
+
+    pushProcess.stdout.on("data", (data) => {
+      console.log(data.toString());
+    });
+
+    pushProcess.stderr.on("data", (data) => {
+      console.error(data.toString());
+    });
+
+    pushProcess.on("close", (code) => {
+      if (code === 0) {
+        console.log("Git push successful.");
+      } else {
+        console.error(`Git push failed with exit code ${code}.`);
+      }
+    });
+  } catch (err: any) {
+    console.error("Error making Git push:", err.message);
+  }
 }
 
 program
@@ -112,29 +149,6 @@ program
 program
   .command("push")
   .description(`Push a branch ${getBranchName()} to the remote repository`)
-  .action(() => {
-    try {
-      const branchName = getBranchName();
-      const pushProcess = spawn("git", ["push", "origin", branchName]);
-
-      pushProcess.stdout.on("data", (data) => {
-        console.log(data.toString());
-      });
-
-      pushProcess.stderr.on("data", (data) => {
-        console.error(data.toString());
-      });
-
-      pushProcess.on("close", (code) => {
-        if (code === 0) {
-          console.log("Git push successful.");
-        } else {
-          console.error(`Git push failed with exit code ${code}.`);
-        }
-      });
-    } catch (err: any) {
-      console.error("Error making Git push:", err.message);
-    }
-  });
+  .action(push);
 
 program.parse(process.argv);
