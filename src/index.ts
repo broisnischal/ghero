@@ -52,7 +52,7 @@ function commit(commitMessage: string) {
 
 program
   .command("commit")
-  .argument("<string>", "Commit message")
+  .argument("<commit message>", "The commit message")
   .action((message: string) => {
     const projectFolderName = path.basename(process.cwd());
     const date = format(new Date(), "yyyy-MM-dd HH:mm");
