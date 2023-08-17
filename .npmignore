@@ -3,4 +3,5 @@ src
 .github
 pnpm-lock.yaml
 tsconfig.js
+tsconfig.json
 vite.config.ts

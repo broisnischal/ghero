@@ -12,8 +12,8 @@
 
 aitc commit "role-based-multi-authorization";
 
-# This will automatically creates the commit message where then it prompts if the time is
-#  greater than 5pm.
+# This will automatically creates the commit message
+# where then it prompts if the time is greater than 5pm.
 ```
 
 **aitc push - pushes to the current branch**
