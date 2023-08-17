@@ -5,7 +5,7 @@
   "bin": {
     "aitc": "dist/index.js"
   },
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "tsc -w",
     "link": "yarn --global unlink ghero && yarn --global link"
