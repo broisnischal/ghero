@@ -144,7 +144,7 @@ program
   .command("commit")
   .argument("[commit message]", "The commit message")
   .action((message: string = "") => {
-    let commitMessages = message.length >= 0;
+    let commitMessages = message.length > 0;
     const projectFolderName = path.basename(process.cwd());
     const date = format(new Date(), "yyyy-MM-dd HH:mm");
     const commitMessage = `${date} | ${formatFolderName(
