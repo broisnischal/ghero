@@ -49,19 +49,11 @@ function calculateTimeDifference(): number | null {
 async function commit(commitMessage?: string) {
   let message;
 
-  console.log(commitMessage);
-
-  // asdf
   if (!commitMessage) {
-    console.log("asdf");
     message = await commitmessage();
   }
 
-  const daaaa = await commitmessage();
-
-  console.log(daaaa);
-
-  console.log(message);
+  // const daaaa = await commitmessage();
 
   execSync("git add .");
   const commitProcess = spawn("git", ["commit", "-m", message as string]);
@@ -146,7 +138,7 @@ program
   .action((message: string = "") => {
     let commitMessages = message.length > 0;
 
-    console.log("commit messages" + commitMessages);
+    // console.log("commit messages" + commitMessages);
     const projectFolderName = path.basename(process.cwd());
     const date = format(new Date(), "yyyy-MM-dd HH:mm");
     const commitMessage = `${date} | ${formatFolderName(

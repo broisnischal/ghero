@@ -70,7 +70,6 @@ const one = "beep boop";
 const other = "beep boob blah";
 export const commitmessage = async () => {
   const key = await getFirstAPIKey();
-  console.log(key);
 
   if (!key) {
     await inquirer
@@ -82,10 +81,10 @@ export const commitmessage = async () => {
         },
       ])
       .then((val: any) => {
-        console.log(val);
+        // console.log(val);
         // Use user feedback for... whatever!!
         insertAPIKey(val.input);
-        console.log("your token have been stored");
+        console.log("Your token have been stored");
       })
       .catch((error: any) => {
         if (error.isTtyError) {
