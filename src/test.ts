@@ -24,11 +24,14 @@ const getPreviousCommitDetails = () => {
   }
 };
 
+const excludedFiles = [":!package.json", ":!package-lock.json"];
 // getPreviousCommitDetails();
 
 const getCommittedTextData = () => {
   try {
-    const committedTextData = execSync("git diff HEAD^ HEAD").toString();
+    const committedTextData = execSync(
+      `git diff HEAD^ HEAD ${excludedFiles.join(" ")}`
+    ).toString();
     return committedTextData;
   } catch (error) {
     console.error("Error fetching committed text data:", error);
@@ -104,6 +107,8 @@ const other = "beep boob blah";
     model: "gemini-pro",
   });
 
+  // added comment
+
   const prompt = `
     ${data}
 
@@ -119,10 +124,17 @@ const other = "beep boob blah";
 
   `;
 
-  const result = await model.generateContent(prompt);
+  console.log("--------------------");
 
-  const response = result.response;
+  console.log(prompt);
+  try {
+    const result = await model.generateContent(prompt);
 
-  const text = response.text();
-  console.log(text);
+    const response = result.response;
+
+    const text = response.text();
+    console.log(text);
+  } catch (error) {
+    console.log(error);
+  }
 })();
