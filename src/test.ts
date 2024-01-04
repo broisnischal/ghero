@@ -36,7 +36,7 @@ const excludedFiles = [
 const getCommittedTextData = () => {
   try {
     const committedTextData = execSync(
-      `git diff HEAD^ HEAD ${excludedFiles.join(" ")}`
+      `git diff HEAD^ -- . ${excludedFiles.join(" ")}`
     ).toString();
     return committedTextData;
   } catch (error) {
