@@ -162,7 +162,7 @@ program
         (answer) => {
           rl.close();
           if (answer.toLocaleLowerCase() === "y") {
-            if (!commitMessages) {
+            if (commitMessages) {
               commit(commitMessage);
             } else {
               commit();
