@@ -48,6 +48,7 @@ function calculateTimeDifference(): number | null {
 
 async function commit(commitMessage?: string) {
   let message;
+  // asdf
   if (!commitMessage) {
     console.log("asdf");
     message = await commitmessage();
