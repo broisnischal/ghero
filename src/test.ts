@@ -4,8 +4,11 @@ import "colors";
 import * as Diff from "diff";
 import sqlite3 from "sqlite3";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import path from "path";
 
-const db = new sqlite3.Database(":memory:");
+const dbFilePath = path.join(__dirname, "main.db");
+
+const db = new sqlite3.Database(dbFilePath);
 
 db.serialize(() => {
   db.run("CREATE TABLE IF NOT EXISTS apikeys (key TEXT)");
