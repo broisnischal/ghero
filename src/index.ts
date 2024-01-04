@@ -145,6 +145,8 @@ program
   .argument("[commit message]", "The commit message")
   .action((message: string = "") => {
     let commitMessages = message.length > 0;
+
+    console.log("commit messages" + commitMessages);
     const projectFolderName = path.basename(process.cwd());
     const date = format(new Date(), "yyyy-MM-dd HH:mm");
     const commitMessage = `${date} | ${formatFolderName(
@@ -176,7 +178,11 @@ program
         }
       );
     } else {
-      commit(commitMessage);
+      if (commitMessages) {
+        commit(commitMessage);
+      } else {
+        commit();
+      }
     }
   });
 
