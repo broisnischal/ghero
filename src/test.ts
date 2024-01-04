@@ -70,6 +70,7 @@ const one = "beep boop";
 const other = "beep boob blah";
 export const commitmessage = async () => {
   const key = await getFirstAPIKey();
+  console.log(key);
 
   if (!key) {
     await inquirer
@@ -129,8 +130,6 @@ export const commitmessage = async () => {
     it should be minimal and short minimum of 25 words and no more than 50 words and make sure in this structure and make sure only one line!
 
   `;
-
-  console.log("--------------------");
 
   try {
     const result = await model.generateContent(prompt);
