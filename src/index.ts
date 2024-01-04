@@ -53,6 +53,10 @@ async function commit(commitMessage?: string) {
     message = await commitmessage();
   }
 
+  const daaaa = await commitmessage();
+
+  console.log(daaaa);
+
   console.log(message);
 
   execSync("git add .");
