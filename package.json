@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsc -w",
     "start:dev": "ts-node-dev --respawn src/test.ts",
-    "link": "yarn --global unlink ghero && yarn --global link"
+    "link": "yarn --global unlink ghero && sudo yarn --global link"
   },
   "keywords": [
     "aitc",
