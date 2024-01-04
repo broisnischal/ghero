@@ -64,21 +64,26 @@ function commit(commitMessage: string) {
       }
 
       console.log("Git commit successfull!");
-      console.log(`😆 you worked ${calculateTimeDifference()} minutes more today!`);
+      console.log(
+        `😆 you worked ${calculateTimeDifference()} minutes more today!`
+      );
 
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
       });
 
-      rl.question(`Do you want to push to ${getBranchName()} branch? (y/N): \n`, (answer) => {
-        rl.close();
-        if (answer.toLowerCase() === "y") {
-          push();
-        } else {
-          process.exit(0);
+      rl.question(
+        `Do you want to push to ${getBranchName()} branch? (y/N): \n`,
+        (answer) => {
+          rl.close();
+          if (answer.toLowerCase() === "y") {
+            push();
+          } else {
+            process.exit(0);
+          }
         }
-      });
+      );
     } else {
       if (code === 1) {
       } else {
@@ -103,7 +108,12 @@ function push() {
 
     pushProcess.on("close", (code) => {
       if (code === 0) {
-        console.log(`Git push successful. see you tomorrow! ${format(new Date(), "HH:mm")}`);
+        console.log(
+          `Git push successful. see you tomorrow! ${format(
+            new Date(),
+            "HH:mm"
+          )}`
+        );
       } else {
         console.error(`Git push failed with exit code ${code}.`);
       }
@@ -119,7 +129,9 @@ program
   .action((message: string) => {
     const projectFolderName = path.basename(process.cwd());
     const date = format(new Date(), "yyyy-MM-dd HH:mm");
-    const commitMessage = `${date} | ${formatFolderName(projectFolderName)} - ${message}`;
+    const commitMessage = `${date} | ${formatFolderName(
+      projectFolderName
+    )} - ${message}`;
     // execSync(`git add .`, { stdio: "inherit" });
 
     if (!isNodeModulesIgnored()) {
