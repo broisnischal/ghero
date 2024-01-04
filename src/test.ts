@@ -24,7 +24,13 @@ const getPreviousCommitDetails = () => {
   }
 };
 
-const excludedFiles = [":!package.json", ":!package-lock.json"];
+const excludedFiles = [
+  ":!package.json",
+  ":!package-lock.json",
+  ":!tsconfig.json",
+  ":!node_modules/**/*",
+];
+
 // getPreviousCommitDetails();
 
 const getCommittedTextData = () => {
@@ -126,14 +132,12 @@ const other = "beep boob blah";
 
   console.log("--------------------");
 
-  console.log(prompt);
   try {
     const result = await model.generateContent(prompt);
 
     const response = result.response;
 
     const text = response.text();
-    console.log(text);
   } catch (error) {
     console.log(error);
   }
