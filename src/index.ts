@@ -46,7 +46,7 @@ function calculateTimeDifference(): number | null {
   }
 }
 
-async function commit(commitMessage: string) {
+async function commit(commitMessage?: string) {
   let message;
   if (!commitMessage) {
     console.log("asdf");
@@ -56,7 +56,7 @@ async function commit(commitMessage: string) {
   console.log(message);
 
   execSync("git add .");
-  const commitProcess = spawn("git", ["commit", "-m", commitMessage]);
+  const commitProcess = spawn("git", ["commit", "-m", message as string]);
 
   commitProcess.stdout.on("data", (data) => {
     console.log(data.toString());
@@ -136,6 +136,7 @@ program
   .command("commit")
   .argument("[commit message]", "The commit message")
   .action((message: string = "") => {
+    let commitMessages = message.length > 0;
     const projectFolderName = path.basename(process.cwd());
     const date = format(new Date(), "yyyy-MM-dd HH:mm");
     const commitMessage = `${date} | ${formatFolderName(
@@ -153,7 +154,11 @@ program
         (answer) => {
           rl.close();
           if (answer.toLocaleLowerCase() === "y") {
-            commit(commitMessage);
+            if (!commitMessages) {
+              commit(commitMessage);
+            } else {
+              commit();
+            }
           } else if (answer.toLocaleLowerCase() === "n") {
             console.log("Go add node_modules to .gitignore");
             process.exit(0);
