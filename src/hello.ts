@@ -4,3 +4,7 @@ async function hello() {
 }
 
 console.log("shit");
+
+async function hi() {
+  console.log("shit");
+}

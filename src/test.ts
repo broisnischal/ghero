@@ -5,7 +5,7 @@ import * as Diff from "diff";
 import sqlite3 from "sqlite3";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const db = new sqlite3.Database("./main.db");
+const db = new sqlite3.Database(":memory:");
 
 db.serialize(() => {
   db.run("CREATE TABLE IF NOT EXISTS apikeys (key TEXT)");
