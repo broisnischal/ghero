@@ -68,7 +68,7 @@ const prompt = inquirer.createPromptModule();
 
 const one = "beep boop";
 const other = "beep boob blah";
-(async () => {
+export const commitmessage = async () => {
   const key = await getFirstAPIKey();
 
   if (!key) {
@@ -138,7 +138,9 @@ const other = "beep boob blah";
     const response = result.response;
 
     const text = response.text();
+    return text;
   } catch (error) {
     console.log(error);
+    return error;
   }
-})();
+};

@@ -8,6 +8,7 @@ import * as fs from "fs";
 import readline from "readline";
 import { spawn } from "child_process";
 import branchName from "current-git-branch";
+import { commitmessage } from "./test";
 
 const program = new Command();
 const TARGET = 17;
@@ -45,7 +46,14 @@ function calculateTimeDifference(): number | null {
   }
 }
 
-function commit(commitMessage: string) {
+async function commit(commitMessage: string) {
+  let message;
+  if (!commitMessage) {
+    message = commitmessage();
+  }
+
+  console.log(message);
+
   execSync("git add .");
   const commitProcess = spawn("git", ["commit", "-m", commitMessage]);
 
